@@ -4,14 +4,13 @@ export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 
 
 function subenum(){
-	subfinder -d $1 -all | tee $1.txt
-	assestfinder --subs-only $1 | tee -a $1.txt
+	subfinder -d $1 -all | tee domains.$1.txt
+	assestfinder --subs-only $1 | tee -a domains.$1.txt
 	domained -d $1 --noeyewitness 
-	cat $1.txt | while read i; do ctfr -d $i -o $i.ctfr; done 
-	curl -sk "http://web.archive.org/cdx/search/cdx?url=*.$1&output=txt&fl=original&collapse=urlkey&page=" | awk -F/ '{gsub(/:.*/, "", $3); print $3}' | sort -u | tee -a $1.txt
-	curl -sk "https://crt.sh/?q=%.$1&output=json" | tr ',' '\n' | awk -F'"' '/name_value/ {gsub(/\*\./, "", $4); gsub(/\\n/,"\n",$4);print $4}' | tee -a $1.txt
-	cat $1.txt | sort -u | uniq | tee $1_unique
-	rm $1.txt
+	cat domains.$1.txt | while read i; do ctfr -d $i -o $i.ctfr; done 
+	curl -sk "http://web.archive.org/cdx/search/cdx?url=*.$1&output=txt&fl=original&collapse=urlkey&page=" | awk -F/ '{gsub(/:.*/, "", $3); print $3}' | sort -u | tee -a domains.$1.txt
+	curl -sk "https://crt.sh/?q=%.$1&output=json" | tr ',' '\n' | awk -F'"' '/name_value/ {gsub(/\*\./, "", $4); gsub(/\\n/,"\n",$4);print $4}' | tee -a domains.$1.txt
+	cat domains.$1.txt | sort -u | uniq | tee $1_unique
 	altdns -i $1_unique -o $1.known -w /home/ubuntu/altdns.txt -r -s $1.resolved
 
 }
