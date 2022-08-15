@@ -1,0 +1,5 @@
+alias domained='python3 /home/ubuntu/domained/domained.py'
+alias ctfr='python3 /home/ubuntu/ctfr/ctfr.py'
+alias vhost='ruby /home/ubuntu/virtual-host-discovery/scan.rb'
+alias tld='python3 /home/ubuntu/tld_scanner/tld_scanner.py'
+alias gitgraber='python3 /home/ubuntu/tool/gitGraber/gitGraber.py'
